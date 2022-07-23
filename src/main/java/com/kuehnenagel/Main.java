@@ -1,10 +1,13 @@
 package com.kuehnenagel;
 
-import com.kuehnenagel.events.Event;
+import com.kuehnenagel.parser.CsvAthleteParser;
+import com.kuehnenagel.writer.XmlAthleteWriter;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
@@ -22,10 +25,21 @@ public class Main {
 
     public static void main(String[] args) {
         setupLogging();
-        log.info("Hello World!");
-        log.info("aaa");
-        int point = PointCalculator.calculatePointForTrack(10.395, Event.RACE_100M);
-        log.info(() -> "100m-dash point is " + point);
+        log.info("Started Decathlon application.");
+
+        char separator = ';';
+        File input = new File("inputs/results.csv");
+        File output = new File("decathlon_overall_ranking.xml");
+
+        Decathlon decathlon = new Decathlon(new CsvAthleteParser(separator), new XmlAthleteWriter());
+        try {
+            decathlon.read(input);
+        } catch (IOException e) {
+            log.log(Level.SEVERE, "Input error", e);
+            return;
+        }
+        decathlon.writeToFileAsSorted(output);
+        log.info("Finished Decathlon application.");
     }
 
     private static void setupLogging() {

@@ -1,4 +1,4 @@
-package com.kuehnenagel.events;
+package com.kuehnenagel.constants;
 
 import java.util.HashMap;
 import java.util.Map;
