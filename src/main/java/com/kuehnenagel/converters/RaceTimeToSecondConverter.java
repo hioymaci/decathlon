@@ -2,6 +2,9 @@ package com.kuehnenagel.converters;
 
 public class RaceTimeToSecondConverter {
 
+    private RaceTimeToSecondConverter() {
+    }
+
     /**
      * Convert a race time like as format m:ss to seconds.
      *

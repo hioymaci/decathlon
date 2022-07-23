@@ -45,6 +45,11 @@ These results are also checked with this [calculator](https://www.sportcalculato
 Project tested with Apache Maven 3.8.1.
 Project developed with IntelliJ Ultimate 2021.1.1.
 
+# Static Code Analyzer
+
+SonarLint plugin in Intellij and IntelliJ itself static code analyzers are used to check code. All possible issues are
+fixed.
+
 # Licence
 
 Go to file [LICENSE](LICENSE).

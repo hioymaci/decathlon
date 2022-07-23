@@ -31,8 +31,6 @@ public class SimpleCSVParser implements CSVParser {
 
     @Override
     public List<String[]> parseFile(File csvFile) throws IOException {
-        if (csvFile == null)
-            return null;
         List<String[]> result = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;

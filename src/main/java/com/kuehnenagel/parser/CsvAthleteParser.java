@@ -21,6 +21,16 @@ public class CsvAthleteParser implements AthleteParser {
         this.separator = separator;
     }
 
+    /**
+     * Parse csv file that contains athletes' decathlon's scores.
+     *
+     * @param csvFile csv file in which each row contain 11 values: athlete's full name, 100-meter dash score as seconds,
+     *                long jump score as meter, shot put score as meter, high jump score as meter, 400-meter as seconds,
+     *                hurtdle race 110-meter as seconds, discus throw as meter, pole vault score as meter, javelin throw
+     *                as meter, 1500-meter run in 'm:ss' format in which m: minutes, ss: seconds.
+     * @return list of parsed athletes.
+     * @throws IOException if file error occurs.
+     */
     @Override
     public List<Athlete> parse(File csvFile) throws IOException {
         List<String[]> parsedValues;

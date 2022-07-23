@@ -4,6 +4,9 @@ import com.kuehnenagel.converters.RaceTimeToSecondConverter;
 
 public class DecathlonScoreFactory {
 
+    private DecathlonScoreFactory() {
+    }
+
     /**
      * @param values first element is name, next 9 elements are events cores as double,
      *               last element is race time score as format 'm:ss'.

@@ -2,10 +2,7 @@ package com.kuehnenagel;
 
 import com.kuehnenagel.constants.Event;
 
-import java.util.logging.Logger;
-
 public class PointCalculator {
-    private static final Logger log = Logger.getLogger((PointCalculator.class.getName()));
 
     private PointCalculator() {
     }

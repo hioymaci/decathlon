@@ -4,6 +4,7 @@ import com.kuehnenagel.Athlete;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,6 +38,9 @@ public class XmlAthleteWriter implements AthleteWriter {
             throws TransformerException {
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        // to be compliant, prohibit the use of all protocols by external entities:
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+        transformerFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
         StreamResult result = new StreamResult(output);
@@ -72,7 +76,7 @@ public class XmlAthleteWriter implements AthleteWriter {
 
             for (Athlete athlete : athleteList) {
                 Element athleteElem = doc.createElement(ATHLETE_TAG_NAME);
-                athleteElem.setAttribute(PLACE_TAG_NAME, String.valueOf(placeSb.toString()));
+                athleteElem.setAttribute(PLACE_TAG_NAME, placeSb.toString());
                 athleteElem.setAttribute(SCORE_TAG_NAME, String.valueOf(entry.getKey()));
                 athleteElem.setAttribute(FULL_NAME_TAG_NAME, athlete.getFullName());
                 rootElement.appendChild(athleteElem);

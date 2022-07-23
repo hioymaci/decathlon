@@ -9,8 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.logging.Logger;
+
 
 public class Decathlon {
+
+    private static final Logger log = Logger.getLogger((Decathlon.class.getName()));
 
     private AthleteParser parser;
     private AthleteWriter writer;
@@ -39,6 +43,11 @@ public class Decathlon {
             } else {
                 athleteList.add(athlete);
             }
+        }
+        if (outputFile == null)
+            throw new RuntimeException("Output file cannot be null!");
+        if (outputFile.getParentFile() != null) {
+            outputFile.getParentFile().mkdirs();
         }
         writer.writeToFileAsSorted(athleteMap, outputFile, this.athletes.size());
     }
