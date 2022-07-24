@@ -35,12 +35,21 @@ public class SimpleCSVParser implements CSVParser {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
             String line;
             while ((line = br.readLine()) != null) {
-                if (ignoreEmptyLines && line.trim().isEmpty())
+                if (ignoreEmptyLines && line.trim().isEmpty()) {
                     continue;
+                }
                 String[] columns = line.split(String.valueOf(this.separator));
                 result.add(columns);
             }
         }
         return result;
+    }
+
+    public boolean isIgnoreEmptyLines() {
+        return ignoreEmptyLines;
+    }
+
+    public void setIgnoreEmptyLines(boolean ignoreEmptyLines) {
+        this.ignoreEmptyLines = ignoreEmptyLines;
     }
 }

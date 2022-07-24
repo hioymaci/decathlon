@@ -27,19 +27,4 @@ public class DecathlonScoreFactory {
         decathlonScore.setRace1500mScore(RaceTimeToSecondConverter.convert(values[10]));
         return decathlonScore;
     }
-
-    public static DecathlonScore generate(double[] scores) {
-        DecathlonScore decathlonScore = new DecathlonScore();
-        decathlonScore.setRace100mScore(scores[1]);
-        decathlonScore.setLongJumpScore(scores[2]);
-        decathlonScore.setShotPutScore(scores[3]);
-        decathlonScore.setHighJumpScore(scores[4]);
-        decathlonScore.setRace400mScore(scores[5]);
-        decathlonScore.setHurdleRace110mScore(scores[6]);
-        decathlonScore.setDiscusThrowScore(scores[7]);
-        decathlonScore.setPoleVaultScore(scores[8]);
-        decathlonScore.setJavelinThrowScore(scores[9]);
-        decathlonScore.setRace1500mScore(scores[10]);
-        return decathlonScore;
-    }
 }

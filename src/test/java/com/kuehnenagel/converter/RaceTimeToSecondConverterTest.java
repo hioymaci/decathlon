@@ -29,58 +29,65 @@ class RaceTimeToSecondConverterTest {
     }
 
     @Test
+    void convert_shouldConvertToZero_whenInputsIsZero() {
+        double actual = RaceTimeToSecondConverter.convert("00:00.00");
+        assertEquals(0, actual);
+    }
+
+    @Test
     void convert_shouldThrowException_whenInputEmpty() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             double actual = RaceTimeToSecondConverter.convert(" ");
         });
     }
 
     @Test
     void convert_shouldThrowException_whenInputNull() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             double actual = RaceTimeToSecondConverter.convert(null);
         });
     }
 
     @Test
     void convert_shouldThrowException_whenInputHasAlphabet() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             double actual = RaceTimeToSecondConverter.convert("1x:1");
         });
     }
 
     @Test
     void convert_shouldThrowException_whenInputsSecondsGreaterThan60() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             double actual = RaceTimeToSecondConverter.convert("3:60.9");
         });
     }
 
     @Test
     void convert_shouldThrowException_whenInputsSecondsIs60() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             double actual = RaceTimeToSecondConverter.convert("3:60.00");
         });
     }
 
     @Test
     void convert_shouldThrowException_whenInputsSecondsIsNegative() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             double actual = RaceTimeToSecondConverter.convert("3:-1");
         });
     }
 
     @Test
     void convert_shouldThrowException_whenInputsMinutesIsNegative() {
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             double actual = RaceTimeToSecondConverter.convert("-3:01.2");
         });
     }
 
     @Test
-    void convert_shouldConvertToZero_whenInputsIsZero() {
-        double actual = RaceTimeToSecondConverter.convert("00:00.00");
-        assertEquals(0, actual);
+    void convert_shouldThrowException_whenInputsHasNoSemicolon() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            double actual = RaceTimeToSecondConverter.convert("555");
+        });
     }
 
 }

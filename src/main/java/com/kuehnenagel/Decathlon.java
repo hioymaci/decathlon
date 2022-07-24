@@ -5,10 +5,7 @@ import com.kuehnenagel.writer.AthleteWriter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.logging.Logger;
 
 
@@ -33,11 +30,11 @@ public class Decathlon {
     }
 
     public void writeToFileAsSorted(File outputFile) {
-        Map<Integer, List<Athlete>> athleteMap = new TreeMap<>();
+        Map<Integer, Set<Athlete>> athleteMap = new TreeMap<>();
         for (Athlete athlete : this.athletes) {
-            List<Athlete> athleteList = athleteMap.get(athlete.getTotalScore());
+            Set<Athlete> athleteList = athleteMap.get(athlete.getTotalScore());
             if (athleteList == null) {
-                List<Athlete> newAthleteList = new ArrayList<>();
+                Set<Athlete> newAthleteList = new TreeSet<>(new AthleteNameComparator());
                 newAthleteList.add(athlete);
                 athleteMap.put(athlete.getTotalScore(), newAthleteList);
             } else {
@@ -56,14 +53,18 @@ public class Decathlon {
         writer.writeToFileAsSorted(athleteMap, outputFile, this.athletes.size());
     }
 
-    private void printAthletes(Map<Integer, List<Athlete>> athleteMap) {
-        int rank = this.athletes.size();
-        for (Map.Entry<Integer, List<Athlete>> entry : athleteMap.entrySet()) {
+    private void printAthletes(Map<Integer, Set<Athlete>> athleteMap) {
+        int place = this.athletes.size();
+        for (Map.Entry<Integer, Set<Athlete>> entry : athleteMap.entrySet()) {
             Integer score = entry.getKey();
-            List<Athlete> athleteList = entry.getValue();
+            Set<Athlete> athleteList = entry.getValue();
+            String placeStr = String.valueOf(place);
+            if (athleteList.size() > 1) {
+                placeStr = String.format("%d-%d", place - athleteList.size() + 1, place);
+            }
+            place -= athleteList.size();
             for (Athlete athlete : athleteList) {
-                log.fine(String.format("%4d - %04d - %s", rank, score, athlete.getFullName()));
-                rank--;
+                log.fine(String.format("%5s - %04d - %s", placeStr, score, athlete.getFullName()));
             }
         }
     }

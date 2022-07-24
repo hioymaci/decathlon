@@ -4,15 +4,15 @@ import java.util.*;
 
 /**
  * Sample command line argument parser.
- * source: https://oshanoshu.github.io/2021-02-23-Simple-Java-Command-Line-Argument-Parser-Implementation/
- * It is changed according to project.
+ * <a href="https://oshanoshu.github.io/2021-02-23-Simple-Java-Command-Line-Argument-Parser-Implementation/">source</a>
+ * It is modified according to the project.
  */
 public class CommandLineParser {
-    private List<String> args = new ArrayList<>();
-    private HashMap<String, List<String>> map = new HashMap<>();
-    private Set<String> flags = new HashSet<>();
+    private final HashMap<String, List<String>> map = new HashMap<>();
+    private final Set<String> flags = new HashSet<>();
+    private List<String> args;
 
-    CommandLineParser(String[] arguments) {
+    public CommandLineParser(String[] arguments) {
         this.args = Arrays.asList(arguments);
         map();
     }
@@ -44,7 +44,7 @@ public class CommandLineParser {
     }
 
     // Map the flags and argument names with the values
-    public void map() {
+    private void map() {
         for (String arg : args) {
             if (arg.startsWith("-")) {
                 if (args.indexOf(arg) == (args.size() - 1)) {

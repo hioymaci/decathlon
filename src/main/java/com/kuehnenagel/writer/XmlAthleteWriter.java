@@ -17,8 +17,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -30,6 +30,8 @@ public class XmlAthleteWriter implements AthleteWriter {
 
     private static final String XML_ROOT_TAG_NAME = "athletes_ranking";
     private static final String ATHLETE_TAG_NAME = "athlete";
+
+    // first letter is especially capital because it is written in first order in attribute list
     private static final String PLACE_TAG_NAME = "Place";
     private static final String SCORE_TAG_NAME = "Score";
     private static final String FULL_NAME_TAG_NAME = "fullName";
@@ -49,7 +51,7 @@ public class XmlAthleteWriter implements AthleteWriter {
     }
 
     @Override
-    public void writeToFileAsSorted(Map<Integer, List<Athlete>> athleteMap, File outputFile, int numberOfAthlete) {
+    public void writeToFileAsSorted(Map<Integer, Set<Athlete>> athleteMap, File outputFile, int numberOfAthlete) {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
         try {
@@ -65,18 +67,19 @@ public class XmlAthleteWriter implements AthleteWriter {
 
 
         int place = numberOfAthlete;
-        for (Map.Entry<Integer, List<Athlete>> entry : athleteMap.entrySet()) {
-            List<Athlete> athleteList = athleteMap.get(entry.getKey());
-            StringBuilder placeSb = new StringBuilder();
-            for (int i = athleteList.size() - 1; i >= 0; --i) {
-                placeSb.append(place - i).append("-");
+        for (Map.Entry<Integer, Set<Athlete>> entry : athleteMap.entrySet()) {
+            Set<Athlete> athleteList = athleteMap.get(entry.getKey());
+            String placeStr;
+            if (athleteList.size() > 1) {
+                placeStr = String.format("%d-%d", place - athleteList.size() + 1, place);
+            } else {
+                placeStr = String.valueOf(place);
             }
-            placeSb.deleteCharAt(placeSb.length() - 1);
             place -= athleteList.size();
 
             for (Athlete athlete : athleteList) {
                 Element athleteElem = doc.createElement(ATHLETE_TAG_NAME);
-                athleteElem.setAttribute(PLACE_TAG_NAME, placeSb.toString());
+                athleteElem.setAttribute(PLACE_TAG_NAME, placeStr);
                 athleteElem.setAttribute(SCORE_TAG_NAME, String.valueOf(entry.getKey()));
                 athleteElem.setAttribute(FULL_NAME_TAG_NAME, athlete.getFullName());
                 rootElement.appendChild(athleteElem);

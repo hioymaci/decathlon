@@ -1,6 +1,7 @@
 package com.kuehnenagel;
 
 import com.kuehnenagel.constants.Event;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -66,6 +67,25 @@ class PointCalculatorTest {
     void calculateEventPoint_returnFullPoint_whenRace1500m() {
         int actual = PointCalculator.calculateEventPoint(233.79, Event.RACE_1500M);
         assertEquals(1000, actual);
+    }
+
+    @Test
+    void calculateDecathlonPoint_shouldCalculate_whenInputsValid() {
+        DecathlonScore ds = new DecathlonScore();
+        ds.setRace100mScore(12.61);
+        ds.setLongJumpScore(500);
+        ds.setShotPutScore(9.22);
+        ds.setHighJumpScore(150);
+        ds.setRace400mScore(60.39);
+        ds.setHurdleRace110mScore(16.43);
+        ds.setDiscusThrowScore(21.6);
+        ds.setPoleVaultScore(260);
+        ds.setJavelinThrowScore(35.81);
+        ds.setRace1500mScore(325.72);
+
+        int overallPoint = PointCalculator.calculateDecathlonPoint(ds);
+
+        Assertions.assertEquals(4200, overallPoint);
     }
 
 }

@@ -15,10 +15,10 @@ public class CsvAthleteParser implements AthleteParser {
 
     private static final Logger log = Logger.getLogger(CsvAthleteParser.class.getName());
 
-    private final char separator;
+    private final CSVParser csvParser;
 
-    public CsvAthleteParser(char separator) {
-        this.separator = separator;
+    public CsvAthleteParser(CSVParser csvParser) {
+        this.csvParser = csvParser;
     }
 
     /**
@@ -26,17 +26,14 @@ public class CsvAthleteParser implements AthleteParser {
      *
      * @param csvFile csv file in which each row contain 11 values: athlete's full name, 100-meter dash score as seconds,
      *                long jump score as meter, shot put score as meter, high jump score as meter, 400-meter as seconds,
-     *                hurtdle race 110-meter as seconds, discus throw as meter, pole vault score as meter, javelin throw
+     *                hurdle race 110-meter as seconds, discus throw as meter, pole vault score as meter, javelin throw
      *                as meter, 1500-meter run in 'm:ss' format in which m: minutes, ss: seconds.
      * @return list of parsed athletes.
      * @throws IOException if file error occurs.
      */
     @Override
     public List<Athlete> parse(File csvFile) throws IOException {
-        List<String[]> parsedValues;
-        CSVParser csvParser = new SimpleCSVParser(separator);
-        parsedValues = csvParser.parseFile(csvFile);
-//        HelperUtil.printParsedValued(parsedValues);
+        List<String[]> parsedValues = csvParser.parseFile(csvFile);
         return parseAthletes(parsedValues);
     }
 
@@ -45,7 +42,7 @@ public class CsvAthleteParser implements AthleteParser {
         for (int row = 0; row < parsedValues.size(); row++) {
             String[] columns = parsedValues.get(row);
             if (columns.length != 11) {
-                log.warning(String.format("Row:%d has not 11 values which are separatored with '%c'.", row + 1, separator));
+                log.warning(String.format("Row:%d has not 11 values which are separated.", row + 1));
                 continue;
             }
             String fullName = columns[0];
