@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class Decathlon {
 
-    private static final Logger log = Logger.getLogger((Decathlon.class.getName()));
+    private static final Logger log = Logger.getLogger(Decathlon.class.getName());
 
     private AthleteParser parser;
     private AthleteWriter writer;
@@ -44,12 +44,28 @@ public class Decathlon {
                 athleteList.add(athlete);
             }
         }
-        if (outputFile == null)
+        if (Main.isVerbose()) {
+            printAthletes(athleteMap);
+        }
+        if (outputFile == null) {
             throw new RuntimeException("Output file cannot be null!");
+        }
         if (outputFile.getParentFile() != null) {
             outputFile.getParentFile().mkdirs();
         }
         writer.writeToFileAsSorted(athleteMap, outputFile, this.athletes.size());
+    }
+
+    private void printAthletes(Map<Integer, List<Athlete>> athleteMap) {
+        int rank = this.athletes.size();
+        for (Map.Entry<Integer, List<Athlete>> entry : athleteMap.entrySet()) {
+            Integer score = entry.getKey();
+            List<Athlete> athleteList = entry.getValue();
+            for (Athlete athlete : athleteList) {
+                log.fine(String.format("%4d - %04d - %s", rank, score, athlete.getFullName()));
+                rank--;
+            }
+        }
     }
 
     public AthleteParser getParser() {

@@ -1,4 +1,4 @@
-package com.kuehnenagel;
+package com.kuehnenagel.converter;
 
 import com.kuehnenagel.converters.RaceTimeToSecondConverter;
 import org.junit.jupiter.api.Test;

@@ -26,12 +26,12 @@ import java.util.logging.Logger;
  */
 public class XmlAthleteWriter implements AthleteWriter {
 
-    private static final Logger log = Logger.getLogger((XmlAthleteWriter.class.getName()));
+    private static final Logger log = Logger.getLogger(XmlAthleteWriter.class.getName());
 
     private static final String XML_ROOT_TAG_NAME = "athletes_ranking";
     private static final String ATHLETE_TAG_NAME = "athlete";
-    private static final String PLACE_TAG_NAME = "place";
-    private static final String SCORE_TAG_NAME = "score";
+    private static final String PLACE_TAG_NAME = "Place";
+    private static final String SCORE_TAG_NAME = "Score";
     private static final String FULL_NAME_TAG_NAME = "fullName";
 
     private static void writeXml(Document doc, OutputStream output)
@@ -51,7 +51,7 @@ public class XmlAthleteWriter implements AthleteWriter {
     @Override
     public void writeToFileAsSorted(Map<Integer, List<Athlete>> athleteMap, File outputFile, int numberOfAthlete) {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = null;
+        DocumentBuilder docBuilder;
         try {
             docBuilder = docFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {

@@ -8,14 +8,21 @@ Java Runtime Environment 8 is required. [Click](https://www.oracle.com/java/tech
 
 # Usage
 
-Project runs with terminal.
+Project run from the terminal.
 
-./java -jar decathlon.jar
+**usage:** `java -jar decathlon.jar -i inputFile.csv -o outputFile.xml`
 
-Command arguments:
+**version:** _0.0.1_
 
--h: help
--v: version
+* **-i**: mandatory input csv file. Default separator is semicolon ';'. Use -s parameter to change the
+  separator.
+* **-o**: output file. Output file contains all athletes overall decathlon scores, full names and their place. Output
+  file
+  format is xml.
+* **-s**: separator character for input csv file. Default is semicolon ';'. It should be one character.
+* **-v**: print version of the program.
+* **-k**: verbose output.
+* **-h**: print this usage information.
 
 # Resources
 
@@ -36,6 +43,10 @@ These results are also checked with this [calculator](https://www.sportcalculato
 # Naming Convention
 
 [Google naming convention](https://google.github.io/styleguide/javaguide.html) is used in this project.
+
+# Benchmark
+
+Decathlon calculator calculates 1,000,000 results in 7.522 seconds on average. (10 individual test)
 
 # Dependencies
 

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 
 public class CsvAthleteParser implements AthleteParser {
 
-    private static final Logger log = Logger.getLogger((AthleteParser.class.getName()));
+    private static final Logger log = Logger.getLogger(CsvAthleteParser.class.getName());
 
     private final char separator;
 

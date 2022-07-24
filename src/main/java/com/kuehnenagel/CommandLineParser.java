@@ -12,7 +12,7 @@ public class CommandLineParser {
     private HashMap<String, List<String>> map = new HashMap<>();
     private Set<String> flags = new HashSet<>();
 
-    CommandLineParser(String arguments[]) {
+    CommandLineParser(String[] arguments) {
         this.args = Arrays.asList(arguments);
         map();
     }
@@ -28,9 +28,7 @@ public class CommandLineParser {
     }
 
     public boolean existFlag(String flagName) {
-        if (flags.contains(flagName))
-            return true;
-        return false;
+        return flags.contains(flagName);
     }
 
     /**
@@ -38,10 +36,11 @@ public class CommandLineParser {
      * @return argument values, if it does not exist, return null.
      */
     public String[] getArgumentValue(String argumentName) {
-        if (map.containsKey(argumentName))
+        if (map.containsKey(argumentName)) {
             return map.get(argumentName).toArray(new String[0]);
-        else
+        } else {
             return null;
+        }
     }
 
     // Map the flags and argument names with the values

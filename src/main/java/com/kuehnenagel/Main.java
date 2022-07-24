@@ -2,13 +2,14 @@ package com.kuehnenagel;
 
 import com.kuehnenagel.constants.Constants;
 import com.kuehnenagel.parser.CsvAthleteParser;
+import com.kuehnenagel.utils.HelperUtil;
 import com.kuehnenagel.writer.XmlAthleteWriter;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
 import java.util.Arrays;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -21,22 +22,22 @@ import java.util.logging.Logger;
  */
 public class Main {
 
-    private static final String LOG_FILE_PROPERTIES = "logging.properties";
-
-    private static final Logger log = Logger.getLogger((Main.class.getName()));
+    private static final String LOG_FILE_PROPERTIES = "/logging.properties";
+    private static final String LOG_OUTPUT_FILENAME = "decathlon0.log";
+    private static final Logger log = Logger.getLogger(Main.class.getName());
+    private static boolean verbose = false;
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         setupLogging();
         CommandLineParser clp = setupCommandLineArguments(args);
         log.info("Started Decathlon Score Calculator.");
         try {
             run(clp);
-        } catch (IOException e) {
-            log.log(Level.SEVERE, "io error", e);
-        } catch (RuntimeException e) {
-            log.log(Level.SEVERE, "run time error", e);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "exception is occurred:", e);
         }
-        log.info("Finished Decathlon Score Calculator.");
+        log.info(() -> "Finished Decathlon Score Calculator. Total time: " + HelperUtil.getTotalTime(start));
     }
 
     public static void run(CommandLineParser clp) throws IOException {
@@ -45,11 +46,10 @@ public class Main {
         File outputFile = getOutputFile(clp);
 
         Decathlon decathlon = new Decathlon(new CsvAthleteParser(inputSeparator), new XmlAthleteWriter());
-        log.info("Reading input file: " + inputFile.getAbsolutePath());
+        log.info("Reading input file and calculating scores: " + inputFile.getAbsolutePath());
         decathlon.read(inputFile);
-
+        log.info("Results are being written to the file: " + outputFile.getAbsolutePath());
         decathlon.writeToFileAsSorted(outputFile);
-        log.info("Results are written to file: " + outputFile.getAbsolutePath());
     }
 
     private static File getOutputFile(CommandLineParser clp) {
@@ -80,13 +80,13 @@ public class Main {
 
     private static CommandLineParser setupCommandLineArguments(String[] args) {
         CommandLineParser clp = new CommandLineParser(args);
-        if (clp.existFlag(Constants.HELP_ARGUMENT_NAME)) {
-            System.out.println(Constants.USAGE);
-            System.exit(1);
-        }
         if (clp.existFlag(Constants.VERSION_ARGUMENT_NAME)) {
             System.out.println("Decathlon score calculator version: " + Constants.VERSION);
             System.exit(2);
+        }
+        if (args.length < 2 || clp.existFlag(Constants.HELP_ARGUMENT_NAME)) {
+            System.out.println(Constants.USAGE);
+            System.exit(0);
         }
         validateArguments(clp);
 
@@ -95,6 +95,17 @@ public class Main {
             for (String argumentName : clp.getArgumentNames()) {
                 log.info(() -> String.format("%s : %s", argumentName, Arrays.toString(clp.getArgumentValue(argumentName))));
             }
+        }
+        verbose = clp.existFlag(Constants.VERBOSE_OUTPUT_ARGUMENT_NAME);
+        if (verbose) {
+            log.info("Verbose output. Log level is DEBUG.");
+            Logger.getLogger("").setLevel(Level.FINE);
+            Handler[] handlers =
+                    Logger.getLogger("").getHandlers();
+            for (int index = 0; index < handlers.length; index++) {
+                handlers[index].setLevel(Level.FINE);
+            }
+            log.fine("fine log level");
         }
         return clp;
     }
@@ -117,16 +128,21 @@ public class Main {
     }
 
     private static void setupLogging() {
-        URL url = Main.class.getClassLoader().getResource(LOG_FILE_PROPERTIES);
-        if (url == null) {
-            log.warning("Log property file is not found. Default logging properties is used.");
-            return;
+        try (InputStream in = Main.class.getResourceAsStream(LOG_FILE_PROPERTIES)) {
+            LogManager.getLogManager().readConfiguration(in);
+            String logPath = System.getProperty("user.home") + File.separator + LOG_OUTPUT_FILENAME;
+            log.info(() -> "Program logs can be found at " + logPath);
+        } catch (Exception e) {
+            System.err.println("Log property file reading error.");
+            e.printStackTrace();
         }
+    }
 
-        try {
-            LogManager.getLogManager().readConfiguration(new FileInputStream(url.getFile()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public static boolean isVerbose() {
+        return verbose;
+    }
+
+    public static void setVerbose(boolean verbose) {
+        Main.verbose = verbose;
     }
 }
