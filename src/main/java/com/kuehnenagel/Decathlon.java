@@ -34,11 +34,12 @@ public class Decathlon {
     }
 
     public void writeToFileAsSorted(File outputFile) {
-        Map<Integer, Set<Athlete>> athleteMap = new TreeMap<>();
+        Map<Integer, TreeSet<Athlete>> athleteMap = new TreeMap<>();
+
         for (Athlete athlete : this.athletes) {
-            Set<Athlete> athleteList = athleteMap.get(athlete.getTotalScore());
+            TreeSet<Athlete> athleteList = athleteMap.get(athlete.getTotalScore());
             if (athleteList == null) {
-                Set<Athlete> newAthleteList = new TreeSet<>(new AthleteNameComparator());
+                TreeSet<Athlete> newAthleteList = new TreeSet<>();
                 newAthleteList.add(athlete);
                 athleteMap.put(athlete.getTotalScore(), newAthleteList);
             } else {
@@ -57,11 +58,11 @@ public class Decathlon {
         writer.writeToFileAsSorted(athleteMap, outputFile, this.athletes.size());
     }
 
-    private void printAthletes(Map<Integer, Set<Athlete>> athleteMap) {
+    private void printAthletes(Map<Integer, TreeSet<Athlete>> athleteMap) {
         int place = this.athletes.size();
-        for (Map.Entry<Integer, Set<Athlete>> entry : athleteMap.entrySet()) {
+        for (Map.Entry<Integer, TreeSet<Athlete>> entry : athleteMap.entrySet()) {
             Integer score = entry.getKey();
-            Set<Athlete> athleteList = entry.getValue();
+            Set<Athlete> athleteList = entry.getValue().descendingSet();
             String placeStr = String.valueOf(place);
             if (athleteList.size() > 1) {
                 placeStr = String.format("%d-%d", place - athleteList.size() + 1, place);
@@ -96,4 +97,6 @@ public class Decathlon {
     public void setAthletes(List<Athlete> athletes) {
         this.athletes = athletes;
     }
+
+
 }

@@ -1,6 +1,6 @@
 package com.kuehnenagel;
 
-public class Athlete implements User {
+public class Athlete implements User, Comparable<Athlete> {
 
     private String fullName;
     private DecathlonScore decathlonScore;
@@ -48,5 +48,19 @@ public class Athlete implements User {
                 ", decathlonScore=" + decathlonScore +
                 ", totalScore=" + totalScore +
                 '}';
+    }
+
+    @Override
+    public int compareTo(Athlete o) {
+        int last = this.fullName.compareTo(o.fullName);
+        if (last != 0) {
+            return last;
+        }
+        if (this.totalScore > o.totalScore) {
+            return 1;
+        } else {
+            return -1;
+        }
+        // this method do not return 0 because two athletes are never same.
     }
 }

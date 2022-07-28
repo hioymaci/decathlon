@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 /**
@@ -51,7 +52,7 @@ public class XmlAthleteWriter implements AthleteWriter {
     }
 
     @Override
-    public void writeToFileAsSorted(Map<Integer, Set<Athlete>> athleteMap, File outputFile, int numberOfAthlete) {
+    public void writeToFileAsSorted(Map<Integer, TreeSet<Athlete>> athleteMap, File outputFile, int numberOfAthlete) {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder;
         try {
@@ -67,8 +68,8 @@ public class XmlAthleteWriter implements AthleteWriter {
 
 
         int place = numberOfAthlete;
-        for (Map.Entry<Integer, Set<Athlete>> entry : athleteMap.entrySet()) {
-            Set<Athlete> athleteList = athleteMap.get(entry.getKey());
+        for (Map.Entry<Integer, TreeSet<Athlete>> entry : athleteMap.entrySet()) {
+            Set<Athlete> athleteList = athleteMap.get(entry.getKey()).descendingSet();
             String placeStr;
             if (athleteList.size() > 1) {
                 placeStr = String.format("%d-%d", place - athleteList.size() + 1, place);
