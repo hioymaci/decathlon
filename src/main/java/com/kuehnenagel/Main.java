@@ -1,6 +1,6 @@
 package com.kuehnenagel;
 
-import com.kuehnenagel.parser.CsvAthleteParser;
+import com.kuehnenagel.parser.AthleteParser;
 import com.kuehnenagel.parser.SimpleCSVParser;
 import com.kuehnenagel.utils.CommandLineUtils;
 import com.kuehnenagel.utils.HelperUtil;
@@ -48,7 +48,7 @@ public class Main {
         File inputFile = CommandLineUtils.getInputFile(clp);
         File outputFile = CommandLineUtils.getOutputFile(clp);
 
-        Decathlon decathlon = new Decathlon(new CsvAthleteParser(new SimpleCSVParser(inputSeparator)), new XmlAthleteWriter());
+        Decathlon decathlon = new Decathlon(new SimpleCSVParser(inputSeparator), new AthleteParser(), new XmlAthleteWriter());
         log.info("Reading input file and calculating scores: " + inputFile.getAbsolutePath());
         decathlon.read(inputFile);
         log.info(() -> String.format("There are %d athletes in input file.", decathlon.getAthletes().size()));

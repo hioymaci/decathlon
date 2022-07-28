@@ -3,25 +3,20 @@ package com.kuehnenagel.parser;
 import com.kuehnenagel.Athlete;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-class CsvAthleteParserTest {
+class AthleteParserTest {
 
     @Test
     void parse_shouldParseAthletes_whenInputValid() throws IOException {
         List<String[]> parsedValues = generateSampleInput();
 
-        CSVParser mockParser = Mockito.mock(CSVParser.class);
-        Mockito.when(mockParser.parseFile(Mockito.any())).thenReturn(parsedValues);
+        AthleteParser parser = new AthleteParser();
 
-        CsvAthleteParser parser = new CsvAthleteParser(mockParser);
-
-
-        List<Athlete> athletes = parser.parse(null);
+        List<Athlete> athletes = parser.parseAthletes(parsedValues);
 
         Assertions.assertNotNull(athletes);
         Assertions.assertEquals(2, athletes.size());

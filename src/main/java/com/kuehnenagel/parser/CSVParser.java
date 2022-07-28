@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public interface CSVParser extends Parser {
+public interface CSVParser extends FileParser {
     /**
      * The default separator to use if none is supplied to the constructor.
      */
@@ -18,9 +18,9 @@ public interface CSVParser extends Parser {
     /**
      * Parses csv File and returns an array of elements.
      *
-     * @param csvFile CSV File to be parsed.
+     * @param file CSV File to be parsed.
      * @return The list of elements
      * @throws IOException If bad things happen during the read
      */
-    List<String[]> parseFile(File csvFile) throws IOException;
+    List<String[]> parseFile(File file) throws IOException;
 }

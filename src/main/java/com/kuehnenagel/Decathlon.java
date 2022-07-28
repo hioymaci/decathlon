@@ -1,6 +1,7 @@
 package com.kuehnenagel;
 
 import com.kuehnenagel.parser.AthleteParser;
+import com.kuehnenagel.parser.FileParser;
 import com.kuehnenagel.writer.AthleteWriter;
 
 import java.io.File;
@@ -13,17 +14,20 @@ public class Decathlon {
 
     private static final Logger log = Logger.getLogger(Decathlon.class.getName());
 
-    private AthleteParser parser;
+    private FileParser fileParser;
+    private AthleteParser athleteParser;
     private AthleteWriter writer;
     private List<Athlete> athletes;
 
-    public Decathlon(AthleteParser parser, AthleteWriter writer) {
-        this.parser = parser;
+    public Decathlon(FileParser fileParser, AthleteParser athleteParser, AthleteWriter writer) {
+        this.fileParser = fileParser;
+        this.athleteParser = athleteParser;
         this.writer = writer;
     }
 
     public void read(File file) throws IOException {
-        this.athletes = parser.parse(file);
+        List<String[]> parsedValues = fileParser.parseFile(file);
+        this.athletes = athleteParser.parseAthletes(parsedValues);
         for (Athlete athlete : this.athletes) {
             athlete.setTotalScore(PointCalculator.calculateDecathlonPoint(athlete.getDecathlonScore()));
         }
@@ -69,12 +73,12 @@ public class Decathlon {
         }
     }
 
-    public AthleteParser getParser() {
-        return parser;
+    public AthleteParser getAthleteParser() {
+        return athleteParser;
     }
 
-    public void setParser(AthleteParser parser) {
-        this.parser = parser;
+    public void setAthleteParser(AthleteParser athleteParser) {
+        this.athleteParser = athleteParser;
     }
 
     public AthleteWriter getWriter() {

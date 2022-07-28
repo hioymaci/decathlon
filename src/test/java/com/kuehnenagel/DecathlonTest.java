@@ -1,7 +1,7 @@
 package com.kuehnenagel;
 
 import com.kuehnenagel.parser.AthleteParser;
-import com.kuehnenagel.parser.CsvAthleteParser;
+import com.kuehnenagel.parser.FileParser;
 import com.kuehnenagel.parser.SimpleCSVParser;
 import com.kuehnenagel.writer.AthleteWriter;
 import com.kuehnenagel.writer.XmlAthleteWriter;
@@ -16,41 +16,46 @@ import static com.kuehnenagel.TestUtils.JOHN_DOE;
 public class DecathlonTest {
 
     static Decathlon createDecathlonInstance() {
-        AthleteParser parser = new CsvAthleteParser(new SimpleCSVParser());
+        FileParser fileParser = new SimpleCSVParser();
+        AthleteParser parser = new AthleteParser();
         AthleteWriter athleteWriter = new XmlAthleteWriter();
-        return new Decathlon(parser, athleteWriter);
+        return new Decathlon(fileParser, parser, athleteWriter);
     }
 
     @Test
     void getParser_shouldGetParser_whenever() {
-        AthleteParser parser = new CsvAthleteParser(new SimpleCSVParser());
+        FileParser fileParser = new SimpleCSVParser();
+        AthleteParser athleteParser = new AthleteParser();
         AthleteWriter athleteWriter = new XmlAthleteWriter();
-        Decathlon decathlon = new Decathlon(parser, athleteWriter);
-        Assertions.assertEquals(parser, decathlon.getParser());
+        Decathlon decathlon = new Decathlon(fileParser, athleteParser, athleteWriter);
+        Assertions.assertEquals(athleteParser, decathlon.getAthleteParser());
     }
 
     @Test
     void setParser_shouldSetParser_whenever() {
-        AthleteParser parser = new CsvAthleteParser(new SimpleCSVParser());
+        FileParser fileParser = new SimpleCSVParser();
+        AthleteParser athleteParser = new AthleteParser();
         AthleteWriter athleteWriter = new XmlAthleteWriter();
-        Decathlon decathlon = new Decathlon(new CsvAthleteParser(new SimpleCSVParser()), athleteWriter);
-        decathlon.setParser(parser);
-        Assertions.assertEquals(parser, decathlon.getParser());
+        Decathlon decathlon = new Decathlon(fileParser, new AthleteParser(), athleteWriter);
+        decathlon.setAthleteParser(athleteParser);
+        Assertions.assertEquals(athleteParser, decathlon.getAthleteParser());
     }
 
     @Test
     void getWriter_shouldGetWriter_whenever() {
-        AthleteParser parser = new CsvAthleteParser(new SimpleCSVParser());
+        FileParser fileParser = new SimpleCSVParser();
+        AthleteParser parser = new AthleteParser();
         AthleteWriter athleteWriter = new XmlAthleteWriter();
-        Decathlon decathlon = new Decathlon(parser, athleteWriter);
+        Decathlon decathlon = new Decathlon(fileParser, parser, athleteWriter);
         Assertions.assertEquals(athleteWriter, decathlon.getWriter());
     }
 
     @Test
     void setWriter_shouldSetWriter_whenever() {
-        AthleteParser parser = new CsvAthleteParser(new SimpleCSVParser());
+        FileParser fileParser = new SimpleCSVParser();
+        AthleteParser parser = new AthleteParser();
         AthleteWriter athleteWriter = new XmlAthleteWriter();
-        Decathlon decathlon = new Decathlon(parser, new XmlAthleteWriter());
+        Decathlon decathlon = new Decathlon(fileParser, parser, new XmlAthleteWriter());
         decathlon.setWriter(athleteWriter);
         Assertions.assertEquals(athleteWriter, decathlon.getWriter());
     }

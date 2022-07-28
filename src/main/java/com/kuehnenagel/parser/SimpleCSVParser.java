@@ -30,9 +30,9 @@ public class SimpleCSVParser implements CSVParser {
     }
 
     @Override
-    public List<String[]> parseFile(File csvFile) throws IOException {
+    public List<String[]> parseFile(File file) throws IOException {
         List<String[]> result = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 if (ignoreEmptyLines && line.trim().isEmpty()) {
